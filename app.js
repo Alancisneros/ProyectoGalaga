@@ -1,9 +1,9 @@
 function initCanvas(){
     var ctx = document.getElementById('my_canvas').getContext('2d');
     var backgroundImage = new Image();
-    var naveImage   = new Image(); // nave
-    var enemiespic1  = new Image(); // enemigo 1
-    var enemiespic2 = new Image(); // enemigo 2
+    var naveImage   = new Image(); 
+    var enemiespic1  = new Image(); 
+    var enemiespic2 = new Image(); 
 
     // backgroundImage y naveImage
     backgroundImage.src = "images/background-pic.jpg"; 
