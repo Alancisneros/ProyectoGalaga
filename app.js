@@ -5,10 +5,10 @@ function initCanvas(){
     var enemiespic1  = new Image(); 
     var enemiespic2 = new Image(); 
 
-    // backgroundImage y naveImage
+    // fondo y enemigos
     backgroundImage.src = "images/background-pic.jpg"; 
     naveImage.src       = "images/spaceship-pic.png"; 
-    // Enemigos fotos
+    // Enemigos
     enemiespic1.src     = "images/enemigo1.png";
     enemiespic2.src     = "images/enemigo2.png"; 
     
@@ -16,7 +16,7 @@ function initCanvas(){
     var cW = ctx.canvas.width; 
     var cH = ctx.canvas.height;
 
-   
+   //funcion para retornar la ubicacion y el id de los enemigos
     var enemigo = function(options){
         return {
             id: options.id || '',
@@ -28,7 +28,7 @@ function initCanvas(){
         }
     }
 
- 
+ //definiendo las posiciones iniciales de los enemigos
     var enemies = [
                    new enemigo({id: "enemigo1", x: 100, y: -20, w: 50, h: 30 }),
                    new enemigo({id: "enemigo2", x: 225, y: -20, w: 50, h: 30 }),
@@ -51,7 +51,7 @@ function initCanvas(){
                    new enemigo({ id: "enemigo19", x: 475, y: -200, w: 50, h: 30, image: enemiespic2 }),
                    new enemigo({ id: "enemigo20", x: 600, y: -200, w: 50, h: 30, image: enemiespic2 })
                   ];
-
+//Lista y arreglo de enemigos a mostrar 
     var renderEnemies = function (enemigoList) {
         for (var i = 0; i < enemigoList.length; i++) {
             console.log(enemigoList[i]);
@@ -77,7 +77,7 @@ function initCanvas(){
             fillStyle: 'red',
             font: 'italic bold 36px Arial, sans-serif',
         }
-
+//Funcion que muestra y mueve nuestras imagenes aumentando y disminuyendo los valores en x & y de los elementos
         this.render = function () {
             if(this.direccion === 'left'){
                 this.x-=5;
@@ -94,7 +94,8 @@ function initCanvas(){
 
             for(var i=0; i < this.misiles.length; i++){
                 var m = this.misiles[i];
-                ctx.fillRect(m.x, m.y-=5, m.w, m.h); // bullet direction
+                //Direccion del disparo
+                ctx.fillRect(m.x, m.y-=5, m.w, m.h); 
                 this.hitDetect(this.misiles[i],i);
                 if(m.y <= 0){ 
                     this.misiles.splice(i,1); 
@@ -108,7 +109,9 @@ function initCanvas(){
                 ctx.fillText('Te los hechaste!!!', cW * .5 - 80, 50);
             }
         }
-       
+        
+        
+       //Funcion que compara la posicion de la bala con la posicion del enemigo y lo elimina
         this.hitDetect = function (m, mi) {
             console.log('crush');
             for (var i = 0; i < enemies.length; i++) {
@@ -124,6 +127,8 @@ function initCanvas(){
             }
         }
        
+        
+        //Funcion que detecta si los enemigos atravesaron la barrera y actualiza el estatus del juego.
         this.hitDetectLowerLevel = function(enemigo){
            
             if(enemigo.y > 550){
@@ -135,6 +140,7 @@ function initCanvas(){
               
                 console.log(this.x);
             } 
+            //Funcion que detecta si se estrellaron con nosotros y actualiza el estatus del juego.
             if ((enemigo.y < this.y + 25 && enemigo.y > this.y - 25) &&
                 (enemigo.x < this.x + 45 && enemigo.x > this.x - 45)) { 
                     this.gameStatus.over = true;
@@ -157,12 +163,16 @@ function initCanvas(){
         launcher.render();
         renderEnemies(enemies);
     }
+    
+    //Frecuencia de acturalizacion de la animacion (6)
     var animateInterval = setInterval(animate, 6);
     
     var left_btn  = document.getElementById('left_btn');
     var right_btn = document.getElementById('right_btn');
     var fire_btn  = document.getElementById('fire_btn'); 
 
+    
+    //Funciones que actualizan valores de las coordenaddas para el movimiento
    document.addEventListener('keydown', function(event) {
         if(event.keyCode == 37)
         {
@@ -246,7 +256,7 @@ function initCanvas(){
          }
     });
 
-    // control buttons
+    // Controles de los botones en pantalla
     left_btn.addEventListener('mousedown', function(event) {
         launcher.direccion = 'left';
     });
@@ -265,7 +275,7 @@ function initCanvas(){
     fire_btn.addEventListener('mousedown', function(event) {
         launcher.misiles.push({x: launcher.x + launcher.w*.5, y: launcher.y, w: 3, h: 10});
     });
- 
+ //Funcion para diparar con la barra espaciadora con el cod 32
     document.addEventListener('keydown', function(event) {
         if(event.keyCode == 32) {
            launcher.misiles.push({x: launcher.x + launcher.w*.5, y: launcher.y, w: 3,h: 10});
